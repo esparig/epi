@@ -1,6 +1,14 @@
 def base_conversion(num_str, b1, b2):
-    def base_conv_from_decimal(num, b2, isneg):
+    symbols = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
+
+    def base_conv_from_decimal(num, b2):
         result = [];
+
+        isneg = False;
+        if num < 0:
+            isneg = True;
+            num = -num;
+
         while num > 0:
             cur = num % b2;
             result.append(symbols[cur]);
@@ -11,34 +19,32 @@ def base_conversion(num_str, b1, b2):
 
         return "".join(reversed(result));
 
-    def base_conv_to_decimal(num, b1):
-        i = 0;
+    def base_conv_to_decimal(num_str, b1):
+        isneg = False;
+        digits = len(num_str);
         result = 0;
-        while num > 0:
-            cur = num % b1;
-            result += cur * pow(b1, i);
-            i += 1;
-            num = num // b1;
+        for s in num_str:
+            digits -= 1;
+            if s == "-":
+                isneg = True;
+            else:
+                result += symbols.index(s) * pow(b1, digits);
+        if isneg:
+            return -result;
         return result;
 
-
-    num = int(num_str);
-    isneg = False;
-    symbols = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
-    if num < 0:
-        isneg = True;
-        num = -num;
-
-    print("BASE 10: ", base_conv_to_decimal(num, b1))
     if b1 != 10:
-        return base_conv_from_decimal(base_conv_to_decimal(num, b1), b2, isneg);
+        decimal = base_conv_to_decimal(num_str, b1);
+        if b2 != 10:
+            return base_conv_from_decimal(decimal, b2);
+        else:
+            return decimal;
     else:
-        return base_conv_from_decimal(num, b2, isneg);
+        return base_conv_from_decimal(int(num_str), b2);
 
 
-print(base_conversion('10', 10, 2));
-print(base_conversion('10', 10, 16));
-
-print(base_conversion('306', 10, 13));
-print(base_conversion('1010', 2, 16));
-print(base_conversion('615', 7, 13));
+print(base_conversion('10', 10, 2)); # 1010
+print(base_conversion('10', 2, 10)); # 2
+print(base_conversion('1010', 2, 16)); # A
+print(base_conversion('615', 7, 13)); # 1A7
+print(base_conversion('A', 16, 10)); # 10
