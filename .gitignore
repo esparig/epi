@@ -21,3 +21,6 @@ $RECYCLE.BIN/
 # =========================
 # Operating System Files
 # =========================
+test_override.py
+test_dict_dict.py
+cyclical_queries.py
